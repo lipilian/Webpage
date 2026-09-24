@@ -55,6 +55,21 @@
 							<h3 class="category-heading" id="vision-3d-heading">3D Vision</h3>
 							<div class="row">
 							<article class="col-6 col-12-xsmall work-item">
+								<div class="project-gallery">
+									<a href="images/thumbs/ARKit_VisionOS.png" class="image fit thumb" target="_blank" rel="noopener noreferrer"><img src="images/thumbs/ARKit_VisionOS.png" alt="ARKit and visionOS project screenshot 1" /></a>
+									<a href="images/thumbs/ARKit_VisionOS2.png" class="image fit thumb" target="_blank" rel="noopener noreferrer"><img src="images/thumbs/ARKit_VisionOS2.png" alt="ARKit and visionOS project screenshot 2" /></a>
+									<a href="images/thumbs/ARKit_VisionOS3.png" class="image fit thumb" target="_blank" rel="noopener noreferrer"><img src="images/thumbs/ARKit_VisionOS3.png" alt="ARKit and visionOS project screenshot 3" /></a>
+								</div>
+								<h3>AR Segmentation Mapping &amp; Projection</h3>
+								<div class="project-description">
+									<p><strong>visionOS: segmentation on 3D models.</strong> I mapped 2D AI segmentation results onto 3D models reconstructed through photogrammetry. The pipeline searches the photogrammetry image database for the closest matching view, aligns the segmentation result with that reference image, and uses camera intrinsics and extrinsics to ray-cast the aligned mask onto the 3D surface.</p>
+									<p><strong>iPadOS: live AR overlays.</strong> I wrapped OpenCV image-matching algorithms for iPadOS to align segmentation results with the live ARKit camera view, allowing users to inspect segmentation overlays in real time.</p>
+									<p><strong>Camera-projector system: real-time projection.</strong> I designed a camera-projector pair to project segmentation results onto physical surfaces. Modeling the camera and projector as a stereo pair allows image-matching results in the camera view to be remapped into projector coordinates for aligned, real-time projection.</p>
+									<p><a href="projectPDF/ARKit_Segmentation_projection.pdf" target="_blank" rel="noopener noreferrer">View technical details (PDF)</a></p>
+								</div>
+							</article>
+
+							<article class="col-6 col-12-xsmall work-item">
 								<a href="cross_platform_tracking.pptx" class="image fit thumb" target="_blank"><img src="images/thumbs/grassTracking.gif" alt="" /></a>
 								<h3>Cross-plate form object 3D tracking software </h3>
 								<p>I have designed a user-friendly software that can perform multi-size object 3D tracking, as well as calibrate a 4-camera system using DLT algorithm and bundle adjustment optimized linear calibration, with the aid of a charuco board. The user interface for tuning all detectors and reconstructors is conveniently available under the Jupyter Notebook widget. </p>  

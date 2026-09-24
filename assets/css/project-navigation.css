@@ -171,6 +171,40 @@
 	background: #f5f6f5;
 }
 
+.project-gallery {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+	margin-bottom: 1.5em;
+}
+
+.work-item .project-gallery .image {
+	margin: 0;
+}
+
+.work-item .project-description p + p {
+	margin-top: 1em;
+}
+
+.project-gallery .image:first-child {
+	grid-column: 1 / -1;
+}
+
+.project-gallery .image:not(:first-child) img {
+	aspect-ratio: 16 / 10;
+	object-fit: contain;
+}
+
+@media screen and (max-width: 480px) {
+	.project-gallery {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.project-gallery .image:not(:first-child) img {
+		aspect-ratio: auto;
+	}
+}
+
 @media screen and (max-width: 1280px) {
 	:root { --profile-width: 30%; }
 }
