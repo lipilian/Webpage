@@ -1,0 +1,189 @@
+/* Project directory at the edge of the fixed profile panel. */
+:root {
+	--profile-width: 35%;
+}
+
+.project-nav {
+	position: fixed;
+	z-index: 100;
+	left: calc(var(--profile-width) - 22px);
+	top: calc(50% - 120px);
+	width: 44px;
+}
+
+.project-nav::before {
+	content: '';
+	position: absolute;
+	left: 21px;
+	top: 24px;
+	bottom: 24px;
+	width: 2px;
+	background: #d8dedb;
+}
+
+.project-nav .project-dot {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 48px;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.project-dot::before {
+	content: '';
+	width: 16px;
+	height: 16px;
+	border: 3px solid #fff;
+	border-radius: 50%;
+	background: #a2ada8;
+	box-shadow: 0 0 0 1px #ccd5d0;
+	transition: background-color 150ms, box-shadow 150ms;
+}
+
+.project-dot.is-active::before,
+.project-dot[aria-expanded="true"]::before {
+	background: #31896f;
+	box-shadow: 0 0 0 4px rgba(73, 191, 157, 0.2);
+}
+
+.project-nav button:focus-visible,
+.project-nav a:focus-visible {
+	outline: 2px solid #31896f;
+	outline-offset: 2px;
+}
+
+.project-topics {
+	position: fixed;
+	left: calc(var(--profile-width) + 22px);
+	top: 50%;
+	transform: translateY(-50%);
+	width: 360px;
+	max-width: calc(100vw - var(--profile-width) - 42px);
+	max-height: calc(100vh - 48px);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 20px;
+	border: 1px solid #e0e7e3;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 12px 40px rgba(25, 43, 35, 0.16);
+	color: #666;
+}
+
+.project-topics-title {
+	margin: 0 0 12px;
+	color: #31896f;
+	font-weight: 600;
+	font-size: 1.1em;
+}
+
+.project-topics ol {
+	list-style: none;
+	counter-reset: topics;
+	margin: 0;
+	padding: 0;
+}
+
+.project-topics li {
+	margin: 0;
+	padding: 0;
+	counter-increment: topics;
+}
+
+.project-topics a {
+	display: flex;
+	gap: 12px;
+	align-items: baseline;
+	padding: 10px;
+	border: 0;
+	border-radius: 6px;
+	color: #626a66;
+	font-size: 0.85em;
+	line-height: 1.45;
+}
+
+.project-topics a::before {
+	content: counter(topics, decimal-leading-zero);
+	flex: 0 0 20px;
+	color: #8b9690;
+	font-size: 0.8em;
+}
+
+.project-topics a:hover,
+.project-topics a[aria-current="true"] {
+	background: #edf6f2;
+	color: #226b56;
+}
+
+.project-nav [hidden],
+.project-browser [hidden] {
+	display: none !important;
+}
+
+.project-browser {
+	scroll-margin-top: 32px;
+}
+
+.project-browser .project-category {
+	margin-top: 0;
+}
+
+.project-browser .work-item {
+	width: 100%;
+	margin-bottom: 0;
+}
+
+.project-browser .work-item .image img {
+	max-height: 440px;
+	object-fit: contain;
+	background: #f5f6f5;
+}
+
+@media screen and (max-width: 1280px) {
+	:root { --profile-width: 30%; }
+}
+
+@media screen and (max-width: 980px) {
+	.project-nav {
+		position: sticky;
+		left: auto;
+		top: 0;
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		padding: 6px 0;
+		background: rgba(255, 255, 255, 0.97);
+		border-bottom: 1px solid #e0e7e3;
+	}
+
+	.project-nav::before {
+		top: 29px;
+		bottom: auto;
+		left: calc(50% - 88px);
+		width: 176px;
+		height: 2px;
+	}
+
+	.project-topics {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 360px;
+		max-width: calc(100vw - 32px);
+		max-height: calc(100vh - 100px);
+		max-height: calc(100dvh - 100px);
+	}
+
+	.project-browser { scroll-margin-top: 84px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.project-dot::before { transition: none; }
+}

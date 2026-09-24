@@ -1,0 +1,137 @@
+(function () {
+	'use strict';
+
+	var work = document.getElementById('two');
+	var categories = Array.from(work.querySelectorAll('.project-category'));
+	if (!categories.length) return;
+
+	var nav = document.createElement('nav');
+	nav.className = 'project-nav';
+	nav.setAttribute('aria-label', 'Project directory');
+	var groups = [];
+	var projects = [];
+	var openGroup = null;
+
+	function closeMenu() {
+		if (!openGroup) return;
+		openGroup.panel.hidden = true;
+		openGroup.button.setAttribute('aria-expanded', 'false');
+		openGroup = null;
+	}
+
+	function openMenu(group) {
+		if (openGroup === group) return;
+		closeMenu();
+		group.panel.hidden = false;
+		group.button.setAttribute('aria-expanded', 'true');
+		openGroup = group;
+	}
+
+	categories.forEach(function (category) {
+		var title = category.querySelector('.category-heading').textContent.trim();
+		var item = document.createElement('div');
+		item.className = 'project-nav-group';
+		var button = document.createElement('button');
+		button.type = 'button';
+		button.className = 'project-dot';
+		button.setAttribute('aria-label', title);
+		button.setAttribute('aria-expanded', 'false');
+		button.setAttribute('aria-controls', category.id + '-topics');
+
+		var panel = document.createElement('div');
+		panel.className = 'project-topics';
+		panel.id = category.id + '-topics';
+		panel.hidden = true;
+		var heading = document.createElement('p');
+		heading.className = 'project-topics-title';
+		heading.textContent = title;
+		var list = document.createElement('ol');
+		panel.append(heading, list);
+		item.append(button, panel);
+		nav.appendChild(item);
+		var group = { category: category, button: button, panel: panel, item: item };
+		groups.push(group);
+
+		Array.from(category.querySelectorAll('.work-item')).forEach(function (article, index) {
+			article.id = category.id + '-project-' + (index + 1);
+			article.tabIndex = -1;
+			var link = document.createElement('a');
+			link.href = '#' + article.id;
+			link.textContent = article.querySelector('h3').textContent.trim();
+			var li = document.createElement('li');
+			li.appendChild(link);
+			list.appendChild(li);
+			var project = { article: article, category: category, link: link };
+			projects.push(project);
+			link.addEventListener('click', function (event) {
+				if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+				event.preventDefault();
+				if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+				selectProject(project, true);
+			});
+		});
+
+		item.addEventListener('pointerenter', function (event) {
+			if (event.pointerType !== 'touch') openMenu(group);
+		});
+		item.addEventListener('pointerleave', function () {
+			if (openGroup === group && !item.contains(document.activeElement)) closeMenu();
+		});
+		item.addEventListener('focusin', function () { openMenu(group); });
+		item.addEventListener('focusout', function (event) {
+			if (openGroup === group && !item.contains(event.relatedTarget)) closeMenu();
+		});
+		button.addEventListener('click', function () { openMenu(group); });
+		button.addEventListener('keydown', function (event) {
+			if (event.key === 'ArrowDown') {
+				event.preventDefault();
+				openMenu(group);
+				list.querySelector('a').focus();
+			}
+		});
+	});
+
+	function selectProject(selected, scroll) {
+		projects.forEach(function (project) {
+			var active = project === selected;
+			project.article.hidden = !active;
+			if (active) project.link.setAttribute('aria-current', 'true');
+			else project.link.removeAttribute('aria-current');
+		});
+		groups.forEach(function (group) {
+			var active = group.category === selected.category;
+			group.category.hidden = !active;
+			group.button.classList.toggle('is-active', active);
+		});
+		closeMenu();
+		if (scroll) {
+			selected.article.focus({ preventScroll: true });
+			work.scrollIntoView({
+				behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+				block: 'start'
+			});
+		}
+	}
+
+	function projectFromHash() {
+		return projects.find(function (project) { return '#' + project.article.id === location.hash; });
+	}
+
+	document.getElementById('main').before(nav);
+	work.classList.add('project-browser');
+	selectProject(projectFromHash() || projects[0], false);
+	window.addEventListener('hashchange', function () {
+		var selected = projectFromHash();
+		if (selected || !location.hash) selectProject(selected || projects[0], Boolean(selected));
+	});
+	document.addEventListener('click', function (event) {
+		if (!nav.contains(event.target)) closeMenu();
+	});
+	nav.addEventListener('keydown', function (event) {
+		if (event.key === 'Escape' && openGroup) {
+			var button = openGroup.button;
+			button.focus();
+			closeMenu();
+		}
+	});
+})();

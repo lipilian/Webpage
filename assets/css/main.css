@@ -2638,6 +2638,10 @@ input, select, textarea {
 			margin: 0;
 		}
 
+		#header .contact-line {
+			display: block;
+		}
+
 		#header .image.avatar {
 			margin: 0 0 1em 0;
 			width: 6.25em;
@@ -2699,6 +2703,17 @@ input, select, textarea {
 				margin-top: 0;
 				padding-top: 0;
 			}
+
+/* Project categories */
+
+	.project-category + .project-category {
+		margin-top: 2em;
+	}
+
+	.project-category > .category-heading {
+		font-size: 1.35em;
+		margin-bottom: 1.5em;
+	}
 
 /* Poptrox */
 
