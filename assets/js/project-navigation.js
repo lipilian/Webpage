@@ -11,43 +11,60 @@
 	var groups = [];
 	var projects = [];
 	var openGroup = null;
-	var profile = document.getElementById('one');
-	profile.tabIndex = -1;
-	var profileItem = document.createElement('div');
-	profileItem.className = 'profile-nav-item';
-	var profileLink = document.createElement('a');
-	profileLink.className = 'project-dot';
-	profileLink.href = '#one';
-	profileLink.setAttribute('aria-label', 'Personal Profile');
-	var profileLabel = document.createElement('span');
-	profileLabel.className = 'profile-nav-label';
-	profileLabel.textContent = 'Personal Profile';
-	profileLabel.setAttribute('aria-hidden', 'true');
-	profileLink.appendChild(profileLabel);
-	profileItem.appendChild(profileLink);
-	nav.appendChild(profileItem);
-	profileItem.addEventListener('pointerenter', closeMenu);
-	profileLink.addEventListener('focusin', closeMenu);
-	profileLink.addEventListener('click', function (event) {
-		if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-		event.preventDefault();
-		if (location.hash !== '#one') history.pushState(null, '', '#one');
-		selectProfile(true);
-	});
+	var sectionEntries = [];
 
-	function selectProfile(scroll) {
+	function addSectionLink(id, title) {
+		var section = document.getElementById(id);
+		if (!section) return;
+		section.tabIndex = -1;
+		var item = document.createElement('div');
+		item.className = 'section-nav-item';
+		var link = document.createElement('a');
+		link.className = 'project-dot';
+		link.href = '#' + id;
+		link.setAttribute('aria-label', title);
+		var label = document.createElement('span');
+		label.className = 'section-nav-label';
+		label.textContent = title;
+		label.setAttribute('aria-hidden', 'true');
+		link.appendChild(label);
+		item.appendChild(link);
+		nav.appendChild(item);
+		var entry = { section: section, link: link };
+		sectionEntries.push(entry);
+		item.addEventListener('pointerenter', closeMenu);
+		link.addEventListener('focusin', closeMenu);
+		link.addEventListener('click', function (event) {
+			if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+			event.preventDefault();
+			if (location.hash !== link.hash) history.pushState(null, '', link.hash);
+			selectSection(entry, true);
+		});
+	}
+
+	function clearSectionSelection() {
+		sectionEntries.forEach(function (entry) {
+			entry.link.classList.toggle('is-active', false);
+			entry.link.removeAttribute('aria-current');
+		});
+	}
+
+	function selectSection(entry, scroll) {
 		closeMenu();
-		profileLink.classList.add('is-active');
-		profileLink.setAttribute('aria-current', 'location');
+		clearSectionSelection();
+		entry.link.classList.add('is-active');
+		entry.link.setAttribute('aria-current', 'location');
 		groups.forEach(function (group) { group.button.classList.toggle('is-active', false); });
 		if (scroll) {
-			profile.focus({ preventScroll: true });
-			profile.scrollIntoView({
+			entry.section.focus({ preventScroll: true });
+			entry.section.scrollIntoView({
 				behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
 				block: 'start'
 			});
 		}
 	}
+
+	addSectionLink('one', 'Personal Profile');
 
 	function closeMenu() {
 		if (!openGroup) return;
@@ -138,8 +155,7 @@
 	});
 
 	function selectProject(selected, scroll) {
-		profileLink.classList.toggle('is-active', false);
-		profileLink.removeAttribute('aria-current');
+		clearSectionSelection();
 		projects.forEach(function (project) {
 			var active = project === selected;
 			project.article.hidden = !active;
@@ -165,13 +181,17 @@
 		return projects.find(function (project) { return '#' + project.article.id === location.hash; });
 	}
 
+	addSectionLink('publications', 'Publications');
+	nav.style.setProperty('--nav-count', categories.length + sectionEntries.length);
 	document.getElementById('main').before(nav);
 	work.classList.add('project-browser');
 	selectProject(projectFromHash() || projects[0], false);
-	if (location.hash === '#one') selectProfile(false);
+	var initialSection = sectionEntries.find(function (entry) { return entry.link.hash === location.hash; });
+	if (initialSection) selectSection(initialSection, false);
 	window.addEventListener('hashchange', function () {
-		if (location.hash === '#one') {
-			selectProfile(true);
+		var section = sectionEntries.find(function (entry) { return entry.link.hash === location.hash; });
+		if (section) {
+			selectSection(section, true);
 			return;
 		}
 		var selected = projectFromHash();

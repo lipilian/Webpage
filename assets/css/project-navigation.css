@@ -4,10 +4,12 @@
 }
 
 .project-nav {
+	--nav-count: 8;
+	--nav-dot-width: 44px;
 	position: fixed;
 	z-index: 100;
 	left: calc(var(--profile-width) - 22px);
-	top: calc(50% - 168px);
+	top: calc(50% - var(--nav-count) * 24px);
 	width: 44px;
 }
 
@@ -25,7 +27,7 @@
 	position: relative;
 	display: grid;
 	place-items: center;
-	width: 44px;
+	width: var(--nav-dot-width);
 	height: 48px;
 	padding: 0;
 	border: 0;
@@ -46,11 +48,11 @@
 	transition: background-color 150ms, box-shadow 150ms;
 }
 
-.profile-nav-item {
+.section-nav-item {
 	position: relative;
 }
 
-.profile-nav-label {
+.section-nav-label {
 	position: absolute;
 	left: 44px;
 	top: 50%;
@@ -66,8 +68,8 @@
 	visibility: hidden;
 }
 
-.profile-nav-item:hover .profile-nav-label,
-.profile-nav-item:focus-within .profile-nav-label {
+.section-nav-item:hover .section-nav-label,
+.section-nav-item:focus-within .section-nav-label {
 	visibility: visible;
 }
 
@@ -157,12 +159,33 @@
 }
 
 .project-browser,
-#one {
+#one,
+#publications {
 	scroll-margin-top: 32px;
 }
 
 .project-browser .project-category {
 	margin-top: 0;
+}
+
+#publications .publication-list {
+	padding-left: 1.6em;
+}
+
+#publications .publication-list li {
+	padding-left: 0.4em;
+	margin-bottom: 1.6em;
+}
+
+#publications .publication-list h4 {
+	margin-bottom: 0.35em;
+	line-height: 1.5;
+}
+
+#publications .publication-list p {
+	margin: 0.2em 0;
+	font-size: 0.85em;
+	line-height: 1.6;
 }
 
 .project-browser .work-item {
@@ -228,6 +251,7 @@
 
 @media screen and (max-width: 980px) {
 	.project-nav {
+		--nav-dot-width: min(44px, calc(100vw / var(--nav-count)));
 		position: sticky;
 		left: auto;
 		top: 0;
@@ -242,8 +266,8 @@
 	.project-nav::before {
 		top: 29px;
 		bottom: auto;
-		left: calc(50% - 132px);
-		width: 264px;
+		left: calc(50% - (var(--nav-count) - 1) * var(--nav-dot-width) / 2);
+		width: calc((var(--nav-count) - 1) * var(--nav-dot-width));
 		height: 2px;
 	}
 
@@ -258,13 +282,18 @@
 		max-height: calc(100dvh - 100px);
 	}
 
-	.profile-nav-label {
+	.section-nav-label {
 		left: 0;
 		top: calc(100% + 6px);
 		transform: none;
 	}
 
-	.project-browser, #one { scroll-margin-top: 84px; }
+	.section-nav-item:last-child .section-nav-label {
+		left: auto;
+		right: 0;
+	}
+
+	.project-browser, #one, #publications { scroll-margin-top: 84px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
