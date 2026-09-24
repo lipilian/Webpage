@@ -108,6 +108,14 @@
 			});
 		});
 
+		if (!list.querySelector('a')) {
+			list.hidden = true;
+			var emptyMessage = document.createElement('p');
+			emptyMessage.className = 'project-topics-empty';
+			emptyMessage.textContent = 'No projects yet.';
+			panel.appendChild(emptyMessage);
+		}
+
 		item.addEventListener('pointerenter', function (event) {
 			if (event.pointerType !== 'touch') openMenu(group);
 		});
@@ -123,7 +131,8 @@
 			if (event.key === 'ArrowDown') {
 				event.preventDefault();
 				openMenu(group);
-				list.querySelector('a').focus();
+				var firstTopic = list.querySelector('a');
+				if (firstTopic) firstTopic.focus();
 			}
 		});
 	});

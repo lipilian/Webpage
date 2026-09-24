@@ -7,7 +7,7 @@
 	position: fixed;
 	z-index: 100;
 	left: calc(var(--profile-width) - 22px);
-	top: calc(50% - 144px);
+	top: calc(50% - 168px);
 	width: 44px;
 }
 
@@ -108,6 +108,11 @@
 	font-size: 1.1em;
 }
 
+.project-topics-empty {
+	margin: 0;
+	font-size: 0.85em;
+}
+
 .project-topics ol {
 	list-style: none;
 	counter-reset: topics;
@@ -186,6 +191,18 @@
 	margin-top: 1em;
 }
 
+.work-item .image::before,
+.work-item .image::after {
+	display: none;
+}
+
+.work-item p.project-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em 1.25em;
+	margin-top: 1em;
+}
+
 .project-gallery .image:first-child {
 	grid-column: 1 / -1;
 }
@@ -225,8 +242,8 @@
 	.project-nav::before {
 		top: 29px;
 		bottom: auto;
-		left: calc(50% - 110px);
-		width: 220px;
+		left: calc(50% - 132px);
+		width: 264px;
 		height: 2px;
 	}
 
