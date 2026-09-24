@@ -90,7 +90,7 @@
 		groups.push(group);
 
 		Array.from(category.querySelectorAll('.work-item')).forEach(function (article, index) {
-			article.id = category.id + '-project-' + (index + 1);
+			article.id = article.id || category.id + '-project-' + (index + 1);
 			article.tabIndex = -1;
 			var link = document.createElement('a');
 			link.href = '#' + article.id;

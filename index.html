@@ -55,6 +55,17 @@
 							<h3 class="category-heading" id="vision-3d-heading">3D Vision</h3>
 							<div class="row">
 							<article class="col-6 col-12-xsmall work-item">
+								<span class="image fit"><img src="images/thumbs/BVH.png" alt="2D segmentation vote to 3D photogrammetry" /></span>
+								<h3>2D segmentation vote &rarr; 3D photogrammetry</h3>
+								<p class="project-links"><a href="projectPDF/BVH.pdf" target="_blank" rel="noopener noreferrer">algorithm design</a></p>
+								<div class="project-description">
+									<p><strong>From photogrammetry to 3D segmentation.</strong> This workflow originally used photogrammetry to reconstruct a 3D mesh from captured images. The reconstruction stage has since been replaced by VGGT, as described in my <a href="#coached-photogrammetry">Real time coached photogrammetry</a> project.</p>
+									<p><strong>Combining segmentation masks across views.</strong> After our 2D AI model segments all source images, the resulting masks are mapped onto the 3D mesh and combined through voting. This brings segmentation observations from multiple camera views together on a shared 3D surface.</p>
+									<p><strong>CPU-built BVH with CUDA traversal.</strong> I implemented bounding volume hierarchy (BVH) construction on the CPU and traversal in custom CUDA kernels to accelerate mask-to-mesh mapping. A balanced hierarchy over 2<sup>20</sup> mesh elements has a depth of approximately 20 levels. Traversal prunes irrelevant branches, greatly reducing the number of candidate intersection tests compared with checking every mesh element.</p>
+								</div>
+							</article>
+
+							<article class="col-6 col-12-xsmall work-item">
 								<div class="project-gallery">
 									<span class="image fit"><img src="images/thumbs/ARKit_VisionOS.png" alt="ARKit and visionOS project screenshot 1" /></span>
 									<span class="image fit"><img src="images/thumbs/ARKit_VisionOS2.png" alt="ARKit and visionOS project screenshot 2" /></span>
@@ -125,7 +136,7 @@
 						<section class="project-category" id="ai-infra-deployment" aria-labelledby="ai-infra-deployment-heading">
 							<h3 class="category-heading" id="ai-infra-deployment-heading">AI Infra Deployment</h3>
 							<div class="row">
-								<article class="col-6 col-12-xsmall work-item">
+								<article id="coached-photogrammetry" class="col-6 col-12-xsmall work-item">
 									<span class="image fit"><img src="images/thumbs/VGGT.jpg" alt="Real time coached photogrammetry" /></span>
 									<h3>Real time coached photogrammetry</h3>
 									<div class="project-description">
